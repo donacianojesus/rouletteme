@@ -3,13 +3,12 @@ const path = require('node:path');
 const { Client, Collection, GatewayIntentBits, REST, Routes } = require('discord.js');
 require('dotenv').config();
 
-const { errorEmbed } = require('./src/embeds');
+const { errorEmbed } = require('./embeds');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
-// Load every command module from src/commands into a Collection.
 client.commands = new Collection();
-const commandsPath = path.join(__dirname, 'src', 'commands');
+const commandsPath = path.join(__dirname, 'commands');
 for (const file of fs.readdirSync(commandsPath).filter(f => f.endsWith('.js'))) {
   const command = require(path.join(commandsPath, file));
   client.commands.set(command.data.name, command);
@@ -22,7 +21,7 @@ async function registerCommands() {
   console.log(`Registered ${body.length} commands!`);
 }
 
-client.once('clientReady', async () => {
+client.once('ready', async () => {
   console.log(`Logged in as ${client.user.tag}`);
   await registerCommands();
 });
