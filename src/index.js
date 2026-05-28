@@ -1,9 +1,17 @@
 const fs = require('node:fs');
+const http = require('node:http');
 const path = require('node:path');
 const { Client, Collection, GatewayIntentBits, REST, Routes } = require('discord.js');
 require('dotenv').config();
 
 const { errorEmbed } = require('./embeds');
+const PORT = process.env.PORT || 3000;
+http
+  .createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('RouletteMe is alive');
+  })
+  .listen(PORT, () => console.log(`Health server listening on port ${PORT}`));
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
